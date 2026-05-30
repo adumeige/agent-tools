@@ -3,6 +3,8 @@ package org.antoined.agent.tools.file
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.absolute
+import kotlin.io.path.createDirectories
+import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
 
 /**
@@ -14,6 +16,9 @@ import kotlin.io.path.isDirectory
 class SandboxRoot(root: Path) {
 
     val root: Path = root.absolute().normalize().also {
+        // Create the sandbox root if it doesn't exist yet, so a fresh environment
+        // (e.g. a clean /tmp) works without a manual mkdir.
+        if (!it.exists()) it.createDirectories()
         require(it.isDirectory()) { "Sandbox root must be an existing directory: $it" }
     }
     private val realRoot: Path = this.root.toRealPath()

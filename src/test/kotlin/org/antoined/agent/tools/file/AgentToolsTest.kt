@@ -34,6 +34,17 @@ class AgentToolsTest {
     }
 
     @Test
+    fun `sandbox creates its root when it does not exist yet`() {
+        val missing = tempDir.resolve("not-created-yet/workdir")
+        assertThat(missing.exists()).isFalse()
+
+        val sandbox = SandboxRoot(missing)
+
+        assertThat(missing.isDirectory()).isTrue()
+        assertThat(sandbox.resolve(".")).isEqualTo(missing.toAbsolutePath().normalize())
+    }
+
+    @Test
     fun `writeFile creates parent directories and readFile can read slices`() {
         val sandbox = SandboxRoot(tempDir)
         val writer = FileWriteTools(sandbox)
