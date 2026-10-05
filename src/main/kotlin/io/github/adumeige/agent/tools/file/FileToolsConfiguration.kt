@@ -1,4 +1,4 @@
-package org.antoined.agent.tools.file
+package io.github.adumeige.agent.tools.file
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties

@@ -1,4 +1,4 @@
-package org.antoined.agent.tools.file
+package io.github.adumeige.agent.tools.file
 
 import java.nio.file.Files
 import java.nio.file.Path

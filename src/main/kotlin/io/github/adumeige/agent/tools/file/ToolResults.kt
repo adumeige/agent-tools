@@ -1,4 +1,4 @@
-package org.antoined.agent.tools.file
+package io.github.adumeige.agent.tools.file
 
 /**
  * All tool operations return a ToolResult. We serialize to JSON for the LLM but keep
