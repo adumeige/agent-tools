@@ -6,25 +6,43 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.antoined</groupId>
+        <groupId>io.github.adumeige.agentic-parent</groupId>
         <artifactId>agentic-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath/>
     </parent>
 
+    <groupId>io.github.adumeige.agent-tools</groupId>
     <artifactId>agent-tools</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>Agent Tools</name>
     <description>Reusable file and shell tools for Embabel-based agents.</description>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/adumeige/agent-tools</url>
-        </repository>
-    </distributionManagement>
+    <url>https://github.com/adumeige/agent-tools</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>adumeige</id>
+            <name>Antoine Dumeige</name>
+            <url>https://github.com/adumeige</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/adumeige/agent-tools.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/adumeige/agent-tools.git</developerConnection>
+        <url>https://github.com/adumeige/agent-tools</url>
+    </scm>
 
     <properties>
         <junit.version>5.11.3</junit.version>
@@ -86,4 +104,80 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>central-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.2.8</version>
+                        <configuration>
+                            <signer>bc</signer>
+                            <bestPractices>true</bestPractices>
+                            <keyEnvName>MAVEN_GPG_KEY</keyEnvName>
+                            <passphraseEnvName>MAVEN_GPG_PASSPHRASE</passphraseEnvName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.11.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>${central.autoPublish}</autoPublish>
+                            <waitUntil>${central.waitUntil}</waitUntil>
+                            <waitMaxTime>3600</waitMaxTime>
+                            <deploymentName>${project.groupId}:${project.version}</deploymentName>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jetbrains.dokka</groupId>
+                        <artifactId>dokka-maven-plugin</artifactId>
+                        <version>2.2.0</version>
+                        <configuration>
+                            <jdkVersion>${java.version}</jdkVersion>
+                            <sourceDirectories>
+                                <dir>${project.basedir}/src/main/kotlin</dir>
+                            </sourceDirectories>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>javadocJar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

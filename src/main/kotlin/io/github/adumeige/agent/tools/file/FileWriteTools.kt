@@ -1,4 +1,4 @@
-package org.antoined.agent.tools.file
+package io.github.adumeige.agent.tools.file
 
 import com.embabel.agent.api.annotation.LlmTool
 import com.embabel.agent.core.AgentProcess
